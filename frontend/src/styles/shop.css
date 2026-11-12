@@ -1,0 +1,7 @@
+.shop-container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+.shop-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.shop-filters { display: flex; gap: 0.5rem; }
+.search-input, .category-select { padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
+.no-products { text-align: center; color: #777; }
+.loading, .error-msg { text-align: center; margin-top: 2rem; font-weight: bold; }

@@ -1,0 +1,12 @@
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(9, 9, 1, 0.8);
+    color: #ffff;
+}
+
+.navbar { background:#222; color:#fff; padding:1rem; }
+.navbar-logo { height:30px; margin-right:0.5rem; }
+.navbar-links a { color:#fff; margin-left:1rem; }

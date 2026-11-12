@@ -1,0 +1,5 @@
+.order-success { max-width: 600px; margin: 4rem auto; text-align: center; }
+.success-icon { font-size: 4rem; color: #5cb85c; margin-bottom: 1rem; }
+.order-success h1 { margin-bottom: 0.5rem; }
+.order-success p { margin-bottom: 1.5rem; }
+.success-actions a { display: inline-block; margin: 0.5rem; padding: 0.6rem 1.2rem; background: #007bff; color: #fff; border-radius: 4px; text-decoration: none; }

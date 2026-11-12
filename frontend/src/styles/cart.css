@@ -1,0 +1,10 @@
+/* Minimal styling for Cart page */
+.cart-container { padding: 20px; }
+.cart-layout { display: flex; gap: 20px; }
+.cart-items { flex: 2; }
+.cart-item { display: flex; align-items: center; margin-bottom: 10px; }
+.cart-item img { width: 80px; height: 80px; object-fit: cover; margin-right: 10px; }
+.cart-item-info { flex: 1; }
+.cart-item-qty select { padding: 4px; }
+.cart-summary { flex: 1; border: 1px solid #ddd; padding: 20px; }
+.checkout-btn, .remove-btn { cursor: pointer; }

@@ -1,0 +1,11 @@
+.checkout-container { max-width: 960px; margin: 2rem auto; padding: 1rem; }
+.checkout-layout { display: flex; gap: 2rem; }
+.checkout-form, .checkout-summary { flex: 1; }
+.checkout-form h2, .checkout-summary h2 { margin-bottom: 1rem; }
+.form-group { margin-bottom: 0.8rem; }
+.form-group label { display: block; margin-bottom: 0.3rem; }
+.form-group input, .form-group select { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
+.checkout-item { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+.checkout-total, .summary-row.total { font-weight: bold; font-size: 1.1rem; }
+.paypal-btn-wrapper { margin-top: 1rem; }
+.address-warning { color: #d9534f; margin-top: 0.5rem; }
