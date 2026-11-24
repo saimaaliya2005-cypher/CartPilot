@@ -19,6 +19,7 @@ const getAccessToken = async () => {
   if (!res.ok) {
     throw new Error(data.error_description || "Failed to get PayPal access token");
   }
+
   return data.access_token;
 };
 

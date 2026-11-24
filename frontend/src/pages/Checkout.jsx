@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
@@ -15,6 +15,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const { cartItems, shippingAddress } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
+  const placed = useRef(false);
 
   const [address, setAddress] = useState({
     fullName: shippingAddress.fullName || user?.name || "",
@@ -30,14 +31,16 @@ const Checkout = () => {
     setAddress({ ...address, [e.target.name]: e.target.value });
   };
 
-  const isAddressComplete = Object.values(address).every((v) => v.trim() !== "");
+  const isAddressComplete = Object.values(address).every(
+    (v) => v.trim() !== "",
+  );
 
   const createPayPalOrder = async () => {
     try {
       const { data } = await axios.post(
         `${API}/payment/create-order`,
         { amount: total.toFixed(2) },
-        { headers: { Authorization: `Bearer ${user.token}` } }
+        { headers: { Authorization: `Bearer ${user.token}` } },
       );
       return data.id;
     } catch (err) {
@@ -51,7 +54,7 @@ const Checkout = () => {
       const response = await axios.post(
         `${API}/payment/capture-order`,
         { orderID: data.orderID },
-        { headers: { Authorization: `Bearer ${user.token}` } }
+        { headers: { Authorization: `Bearer ${user.token}` } },
       );
 
       if (response.data.message === "Payment verified successfully") {
@@ -67,6 +70,7 @@ const Checkout = () => {
         };
 
         await dispatch(createOrder(orderData)).unwrap();
+        placed.current = true;
         dispatch(clearCart());
         toast.success("Order placed successfully!");
         navigate("/order-success");
@@ -78,10 +82,11 @@ const Checkout = () => {
     }
   };
 
-  if (cartItems.length === 0) {
-    navigate("/cart");
-    return null;
-  }
+  useEffect(() => {
+    if (cartItems.length === 0 && !placed.current) navigate("/cart");
+  }, [cartItems, navigate]);
+
+  if (cartItems.length === 0) return null;
 
   return (
     <div className="checkout-container">
@@ -91,25 +96,55 @@ const Checkout = () => {
           <h2>Shipping Address</h2>
           <div className="form-group">
             <label>Full Name</label>
-            <input type="text" name="fullName" value={address.fullName} onChange={handleAddressChange} required />
+            <input
+              type="text"
+              name="fullName"
+              value={address.fullName}
+              onChange={handleAddressChange}
+              required
+            />
           </div>
           <div className="form-group">
             <label>Street Address</label>
-            <input type="text" name="street" value={address.street} onChange={handleAddressChange} required />
+            <input
+              type="text"
+              name="street"
+              value={address.street}
+              onChange={handleAddressChange}
+              required
+            />
           </div>
           <div className="form-row">
             <div className="form-group">
               <label>City</label>
-              <input type="text" name="city" value={address.city} onChange={handleAddressChange} required />
+              <input
+                type="text"
+                name="city"
+                value={address.city}
+                onChange={handleAddressChange}
+                required
+              />
             </div>
             <div className="form-group">
               <label>Postal Code</label>
-              <input type="text" name="postalCode" value={address.postalCode} onChange={handleAddressChange} required />
+              <input
+                type="text"
+                name="postalCode"
+                value={address.postalCode}
+                onChange={handleAddressChange}
+                required
+              />
             </div>
           </div>
           <div className="form-group">
             <label>Country</label>
-            <input type="text" name="country" value={address.country} onChange={handleAddressChange} required />
+            <input
+              type="text"
+              name="country"
+              value={address.country}
+              onChange={handleAddressChange}
+              required
+            />
           </div>
         </div>
 
@@ -117,7 +152,9 @@ const Checkout = () => {
           <h2>Order Summary</h2>
           {cartItems.map((item) => (
             <div key={item._id} className="checkout-item">
-              <span>{item.name} × {item.qty}</span>
+              <span>
+                {item.name} × {item.qty}
+              </span>
               <span>${(item.price * item.qty).toFixed(2)}</span>
             </div>
           ))}
@@ -129,7 +166,9 @@ const Checkout = () => {
 
           {isAddressComplete ? (
             <div className="paypal-btn-wrapper">
-              <PayPalScriptProvider options={{ "client-id": "sb", currency: "USD" }}>
+              <PayPalScriptProvider
+                options={{ "client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID, currency: "USD" }}
+              >
                 <PayPalButtons
                   style={{ layout: "vertical", color: "blue", shape: "rect" }}
                   createOrder={createPayPalOrder}
@@ -139,7 +178,9 @@ const Checkout = () => {
               </PayPalScriptProvider>
             </div>
           ) : (
-            <p className="address-warning">Please fill in all shipping fields to pay.</p>
+            <p className="address-warning">
+              Please fill in all shipping fields to pay.
+            </p>
           )}
         </div>
       </div>
