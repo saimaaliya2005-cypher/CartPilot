@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 import { fetchProducts } from "../redux/slices/productSlice";
 import ProductCard from "../components/ProductCard";
 import "../styles/shop.css";
@@ -8,7 +9,8 @@ const Shop = () => {
   const dispatch = useDispatch();
   const { items, loading, error } = useSelector((state) => state.products);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("All");
+  const [searchParams] = useSearchParams();
+  const [category, setCategory] = useState(searchParams.get("category") || "All");
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -28,7 +30,7 @@ const Shop = () => {
   return (
     <div className="shop-container">
       <div className="shop-header">
-        <h1>Shop All Products</h1>
+        <h1 className="display shop-title">Shop All</h1>
         <div className="shop-filters">
           <input
             type="text"
