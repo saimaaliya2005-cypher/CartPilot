@@ -236,7 +236,8 @@ const verifyPayment = async (req, res) => {
       const itemLines = emailLines
         .map((l) => `- ${l.name}${l.size ? ` / ${l.size}` : ""}${l.color ? ` / ${l.color}` : ""} x ${l.qty}`)
         .join("\n");
-      await sendEmail(
+      // not awaited: the order is already saved, email must never delay or fail the response
+      sendEmail(
         req.user.email,
         "Order created",
         `Dear ${req.user.name},\n\nThank you for your order!\n\nOrder ID: ${order._id}\n\n${itemLines}\n\nTotal: $${money(totalCents)}\nShipping to: ${a.fullName}, ${a.street}, ${a.city}, ${a.postalCode}, ${a.country}\n\nWe will let you know once it ships.\n\nCartPilot Team`

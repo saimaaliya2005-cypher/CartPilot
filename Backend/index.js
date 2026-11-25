@@ -6,9 +6,16 @@ const userRoutes = require('./routes/authRoutes');
 connectDB();
 
 const app = express();
-app.use(cors());
+// FRONTEND_URL = your site's address(es), comma separated. Empty = allow all (local dev).
+const allowedOrigins = (process.env.FRONTEND_URL || "")
+    .split(",")
+    .map((s) => s.trim().replace(/\/$/, ""))
+    .filter(Boolean);
+app.use(cors(allowedOrigins.length ? { origin: allowedOrigins } : undefined));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.get("/health", (req, res) => res.json({ ok: true }));
 
 app.get("/", (req, res) => {
     res.send("CartPilot Backend is working properly");

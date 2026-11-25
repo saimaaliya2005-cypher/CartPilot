@@ -29,7 +29,8 @@ const registerUser = async(req, res) => {
             of our community. To complete our registration, please use the following One-Time Password (OTP):
             Your OTP for CartPilot registration is : ${otp}`
 
-            await sendEmail(email, 'Welcome to CartPilot -Your OTP for registration', message);
+            // not awaited: a slow or blocked mail server must never block sign-up
+            sendEmail(email, 'Welcome to CartPilot -Your OTP for registration', message);
 
             res.status(201).json({
             _id: user._id,

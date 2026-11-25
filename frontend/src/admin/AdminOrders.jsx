@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import AdminNav from "./AdminNav";
 import "../styles/admin.css";
 
-const API = "http://localhost:5000/api";
+const API = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 const STATUSES = ["pending", "shipped", "delivered"];
 
 const AdminOrders = () => {
