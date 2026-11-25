@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
+import AdminNav from "./AdminNav";
 import "../styles/admin.css";
 
 const API = "http://localhost:5000/api";
@@ -108,7 +109,7 @@ const AdminProducts = () => {
 
   return (
     <div className="admin-wrap">
-      <span className="eyebrow">Admin</span>
+      <AdminNav />
       <h1 className="display admin-title">Products</h1>
 
       <form className="admin-form" onSubmit={onSubmit}>

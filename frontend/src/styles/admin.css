@@ -152,3 +152,126 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- admin tabs + orders ---------- */
+.admin-wrap--wide {
+  max-width: 1000px;
+}
+.admin-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.admin-nav-link {
+  padding: 9px 20px;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.admin-nav-link.active {
+  background: var(--ink);
+  color: #fff;
+}
+
+.admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+.admin-tab {
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.admin-tab.active {
+  background: var(--ink);
+  color: #fff;
+}
+
+.ao-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.ao-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 22px 26px;
+}
+.ao-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.ao-id {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+}
+.ao-meta {
+  margin-top: 2px;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.ao-status {
+  padding: 9px 30px 9px 16px;
+  border: none;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+.ao-status.status-shipped {
+  background: #d9d9d9;
+}
+.ao-status.status-delivered {
+  background: var(--ink);
+  color: #fff;
+}
+.ao-status:disabled {
+  opacity: 0.5;
+}
+.ao-body {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 24px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+.ao-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.8rem;
+  padding: 4px 0;
+}
+.ao-total {
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-weight: 600;
+}
+.ao-address p {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+@media (max-width: 700px) {
+  .ao-body {
+    grid-template-columns: 1fr;
+  }
+}
