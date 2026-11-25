@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "../styles/admin.css";
 
 const API = "http://localhost:5000/api";
-const EMPTY = { name: "", description: "", price: "", category: "", stock: "" };
+const EMPTY = { name: "", description: "", price: "", category: "", stock: "", sizes: "", colors: "" };
 
 const AdminProducts = () => {
   const { user } = useSelector((state) => state.auth);
@@ -57,6 +57,8 @@ const AdminProducts = () => {
       price: p.price,
       category: p.category,
       stock: p.stock,
+      sizes: (p.sizes || []).join(", "),
+      colors: (p.colors || []).join(", "),
     });
     setFile(null);
     setPreview(p.imageUrl || "");
@@ -134,6 +136,17 @@ const AdminProducts = () => {
           <label>
             Stock
             <input name="stock" type="number" min="0" value={form.stock} onChange={onChange} required />
+          </label>
+        </div>
+
+        <div className="admin-grid">
+          <label>
+            Sizes <em>(comma separated, leave empty if none)</em>
+            <input name="sizes" value={form.sizes} onChange={onChange} placeholder="S, M, L, XL" />
+          </label>
+          <label>
+            Colors <em>(comma separated, leave empty if none)</em>
+            <input name="colors" value={form.colors} onChange={onChange} placeholder="Black, Olive, Cream" />
           </label>
         </div>
 

@@ -38,7 +38,7 @@ const Checkout = () => {
     try {
       const { data } = await axios.post(
         `${API}/payment/create-order`,
-        { items: cartItems.map((item) => ({ productId: item._id, quantity: item.qty })) },
+        { items: cartItems.map((item) => ({ productId: item._id, quantity: item.qty, size: item.size, color: item.color })) },
         { headers: { Authorization: `Bearer ${user.token}` } },
       );
       return data.id;
@@ -55,7 +55,7 @@ const Checkout = () => {
         `${API}/payment/capture-order`,
         {
           orderID: data.orderID,
-          items: cartItems.map((item) => ({ productId: item._id, quantity: item.qty })),
+          items: cartItems.map((item) => ({ productId: item._id, quantity: item.qty, size: item.size, color: item.color })),
           address,
         },
         { headers: { Authorization: `Bearer ${user.token}` } },
@@ -139,9 +139,9 @@ const Checkout = () => {
         <div className="checkout-summary">
           <h2>Order Summary</h2>
           {cartItems.map((item) => (
-            <div key={item._id} className="checkout-item">
+            <div key={item.cartKey} className="checkout-item">
               <span>
-                {item.name} × {item.qty}
+                {item.name}{item.size || item.color ? ` (${[item.size, item.color].filter(Boolean).join(", ")})` : ""} × {item.qty}
               </span>
               <span>${(item.price * item.qty).toFixed(2)}</span>
             </div>

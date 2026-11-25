@@ -13,6 +13,8 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const { selectedProduct: product, loading, error } = useSelector((state) => state.products);
   const [qty, setQty] = useState(1);
+  const [size, setSize] = useState("");
+  const [color, setColor] = useState("");
 
   useEffect(() => {
     dispatch(fetchProductById(id));
@@ -20,7 +22,15 @@ const ProductDetail = () => {
   }, [dispatch, id]);
 
   const handleAddToCart = () => {
-    dispatch(addToCart({ ...product, qty }));
+    if (product.sizes?.length && !size) {
+      toast.error("Please choose a size");
+      return;
+    }
+    if (product.colors?.length && !color) {
+      toast.error("Please choose a color");
+      return;
+    }
+    dispatch(addToCart({ ...product, qty, size, color }));
     toast.success("Added to cart!");
   };
 
@@ -61,6 +71,42 @@ const ProductDetail = () => {
         <p className={`pd-stock ${inStock ? "in-stock" : "out-of-stock"}`}>
           {inStock ? `In stock (${product.stock})` : "Sold out"}
         </p>
+
+        {product.colors?.length > 0 && (
+          <div className="pd-option">
+            <span className="eyebrow">Color{color ? `: ${color}` : ""}</span>
+            <div className="pd-pills">
+              {product.colors.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  className={`pd-pill ${color === c ? "active" : ""}`}
+                  onClick={() => setColor(c)}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {product.sizes?.length > 0 && (
+          <div className="pd-option">
+            <span className="eyebrow">Size{size ? `: ${size}` : ""}</span>
+            <div className="pd-pills">
+              {product.sizes.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={`pd-pill ${size === s ? "active" : ""}`}
+                  onClick={() => setSize(s)}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {inStock && (
           <div className="pd-actions">

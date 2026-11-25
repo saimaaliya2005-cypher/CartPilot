@@ -44,14 +44,17 @@ const Cart = () => {
       <div className="cart-layout">
         <div className="cart-items">
           {cartItems.map((item) => (
-            <div key={item._id} className="cart-item">
+            <div key={item.cartKey} className="cart-item">
               <img src={item.imageUrl || "https://via.placeholder.com/100"} alt={item.name} />
               <div className="cart-item-info">
                 <Link to={`/product/${item._id}`}><h3>{item.name}</h3></Link>
                 <p className="cart-item-price">${item.price?.toFixed(2)}</p>
+                {(item.size || item.color) && (
+                  <p className="cart-item-variant">{[item.size, item.color].filter(Boolean).join(" · ")}</p>
+                )}
               </div>
               <div className="cart-item-qty">
-                <select value={item.qty} onChange={(e) => dispatch(updateQty({ id: item._id, qty: Number(e.target.value) }))}>
+                <select value={item.qty} onChange={(e) => dispatch(updateQty({ id: item.cartKey, qty: Number(e.target.value) }))}>
                   {[...Array(10).keys()].map((x) => (
                     <option key={x + 1} value={x + 1}>{x + 1}</option>
                   ))}
@@ -60,7 +63,7 @@ const Cart = () => {
               <div className="cart-item-subtotal">
                 ${(item.price * item.qty).toFixed(2)}
               </div>
-              <button className="remove-btn" onClick={() => handleRemove(item._id, item.name)}>
+              <button className="remove-btn" onClick={() => handleRemove(item.cartKey, item.name)}>
                 <FaTrash />
               </button>
             </div>

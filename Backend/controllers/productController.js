@@ -2,6 +2,17 @@ const Product = require('../model/Product');
 const cloudinary = require('../config/cloudinary');
 
 
+// "S, M, L" (or an array) -> ["S","M","L"], trimmed, no blanks, no duplicates
+const parseList = (v) => {
+    if (Array.isArray(v)) v = v.join(',');
+    return String(v || '')
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .filter((s, i, a) => a.indexOf(s) === i)
+        .slice(0, 20);
+};
+
 const getProducts = async (req, res) => {
     try{
         const products = await Product.find({});
@@ -31,7 +42,7 @@ const getProductById = async(req, res) => {
 
 const createProduct = async(req, res) => {
     try {
-        const { name, description, price, category, stock } = req.body;
+        const { name, description, price, category, stock, sizes, colors } = req.body;
     let imageUrl = '';
     if(req.file) {
         const result = await cloudinary.uploader.upload(req.file.path);
@@ -43,7 +54,9 @@ const createProduct = async(req, res) => {
         price,
         category,
         stock,
-        imageUrl
+        imageUrl,
+        sizes: parseList(sizes),
+        colors: parseList(colors)
     });
     const savedProduct = await product.save();
     res.status(201).json(savedProduct);
@@ -56,7 +69,7 @@ const createProduct = async(req, res) => {
 
 const updateProduct = async (req, res) => {
     try{
-        const { name, description, price, category, stock } = req.body;
+        const { name, description, price, category, stock, sizes, colors } = req.body;
         const product = await Product.findById(req.params.id);
         if(product) {
             product.name = name || product.name;
@@ -64,6 +77,8 @@ const updateProduct = async (req, res) => {
             product.price = price || product.price;
             product.category = category || product.category;
             product.stock = stock || product.stock;
+            if (sizes !== undefined) product.sizes = parseList(sizes);
+            if (colors !== undefined) product.colors = parseList(colors);
             if(req.file) {
                 const result = await cloudinary.uploader.upload(req.file.path);
                 product.imageUrl = result.secure_url;

@@ -180,3 +180,11 @@
     grid-column: 3;
   }
 }
+
+.cart-item-variant {
+  margin-top: 2px;
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}

@@ -34,7 +34,7 @@ const MyOrders = () => {
               <div className="order-items">
                 {order.items?.map((i, idx) => (
                   <div key={idx} className="order-item-row">
-                    <span>{i.productId?.name || "Product"} × {i.quantity}</span>
+                    <span>{i.productId?.name || "Product"}{i.size || i.color ? ` (${[i.size, i.color].filter(Boolean).join(", ")})` : ""} × {i.quantity}</span>
                     <span>${(i.price * i.quantity).toFixed(2)}</span>
                   </div>
                 ))}
