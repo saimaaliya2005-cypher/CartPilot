@@ -1,5 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -12,8 +13,14 @@ import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
 import MyOrders from "./pages/MyOrders";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminProducts from "./admin/AdminProducts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+const AdminRoute = ({ children }) => {
+  const { user } = useSelector((state) => state.auth);
+  return user && user.role === "admin" ? children : <Navigate to="/login" replace />;
+};
 
 function App() {
   return (
@@ -55,6 +62,14 @@ function App() {
             <ProtectedRoute>
               <MyOrders />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminProducts />
+            </AdminRoute>
           }
         />
       </Routes>

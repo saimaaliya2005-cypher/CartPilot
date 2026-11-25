@@ -29,6 +29,7 @@ const Navbar = () => {
 
   const accountLinks = user ? (
     <>
+      {user.role === "admin" && <NavLink className="nav-link" to="/admin">Admin</NavLink>}
       <NavLink className="nav-link" to="/my-orders">Orders</NavLink>
       <button className="nav-link" onClick={handleLogout}>Logout</button>
     </>
@@ -71,6 +72,7 @@ const Navbar = () => {
           <Link className="nav-link" to="/#collections">Collections</Link>
           {user ? (
             <>
+              {user.role === "admin" && <NavLink className="nav-link" to="/admin">Admin</NavLink>}
               <NavLink className="nav-link" to="/my-orders">My orders</NavLink>
               <button className="nav-link" onClick={handleLogout}>Logout</button>
             </>
