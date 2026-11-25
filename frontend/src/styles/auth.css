@@ -1,11 +1,86 @@
-.auth-container { display: flex; justify-content: center; align-items: center; min-height: 80vh; background: #f9f9f9; }
-.auth-card { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); width: 360px; }
-.auth-card h2 { margin-bottom: 0.5rem; }
-.auth-subtitle { font-size: 0.9rem; color: #666; margin-bottom: 1rem; }
-.form-group { margin-bottom: 1rem; }
-.form-group label { display: block; margin-bottom: 0.3rem; font-weight: 500; }
-.form-group input { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
-.auth-btn { width: 100%; padding: 0.6rem; background: #28a745; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-.auth-btn:disabled { background: #94d3a2; cursor: not-allowed; }
-.auth-link { margin-top: 1rem; font-size: 0.9rem; text-align: center; }
-.auth-link a { color: #007bff; text-decoration: none; }
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px);
+  padding: 40px var(--gutter);
+}
+.auth-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: clamp(28px, 5vw, 44px);
+  width: 100%;
+  max-width: 420px;
+}
+.auth-card h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 2.4rem;
+  line-height: 1.05;
+  margin-bottom: 6px;
+}
+.auth-subtitle {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 26px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+}
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 13px 18px;
+  border: none;
+  border-radius: 16px;
+  background: var(--surface);
+  font-size: 0.85rem;
+  outline: none;
+}
+.form-group input:focus,
+.form-group select:focus {
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.auth-btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 15px;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+.auth-btn:hover {
+  background: #262626;
+}
+.auth-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.auth-link {
+  margin-top: 22px;
+  font-size: 0.75rem;
+  text-align: center;
+  color: var(--muted);
+}
+.auth-link a {
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

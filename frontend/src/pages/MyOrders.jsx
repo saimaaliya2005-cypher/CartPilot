@@ -32,7 +32,7 @@ const MyOrders = () => {
                 <span className={`order-status status-${order.status}`}>{order.status}</span>
               </div>
               <div className="order-items">
-                {order.item?.map((i, idx) => (
+                {order.items?.map((i, idx) => (
                   <div key={idx} className="order-item-row">
                     <span>{i.productId?.name || "Product"} × {i.quantity}</span>
                     <span>${(i.price * i.quantity).toFixed(2)}</span>

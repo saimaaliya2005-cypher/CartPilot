@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProductById, clearSelectedProduct } from "../redux/slices/productSlice";
 import { addToCart } from "../redux/slices/cartSlice";
 import { toast } from "react-toastify";
-import { FaStar, FaShoppingCart } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import "../styles/productDetail.css";
 
 const ProductDetail = () => {
@@ -28,41 +28,55 @@ const ProductDetail = () => {
   if (error) return <div className="error-msg">Error: {error}</div>;
   if (!product) return null;
 
+  const inStock = Number(product.stock) > 0;
+
   return (
     <div className="product-detail">
       <div className="product-detail-image">
-        <img src={product.imageUrl || "https://via.placeholder.com/500"} alt={product.name} />
+        {product.imageUrl ? (
+          <img src={product.imageUrl} alt={product.name} />
+        ) : (
+          <span className="pd-placeholder">{product.name?.[0]}</span>
+        )}
       </div>
+
       <div className="product-detail-info">
-        <h1>{product.name}</h1>
-        <div className="product-rating">
+        <button className="back-btn" onClick={() => navigate("/shop")}>
+          ← Back to shop
+        </button>
+
+        <span className="eyebrow">{product.category}</span>
+        <h1 className="display pd-title">{product.name}</h1>
+
+        <div className="pd-rating">
           {[...Array(5)].map((_, i) => (
-            <FaStar key={i} color={i < Math.round(product.rating) ? "#f5a623" : "#ddd"} />
+            <FaStar key={i} size={12} color={i < Math.round(product.rating) ? "#0a0a0a" : "#c9c9c9"} />
           ))}
           <span>({product.numReviews} reviews)</span>
         </div>
-        <p className="product-price">${product.price?.toFixed(2)}</p>
-        <p className="product-category">Category: {product.category}</p>
-        <p className="product-description">{product.description}</p>
-        <p className={`product-stock ${Number(product.stock) > 0 ? "in-stock" : "out-of-stock"}`}>
-          {Number(product.stock) > 0 ? `In Stock (${product.stock})` : "Out of Stock"}
+
+        <p className="pd-price">${Number(product.price).toFixed(2)}</p>
+        <p className="pd-description">{product.description}</p>
+
+        <p className={`pd-stock ${inStock ? "in-stock" : "out-of-stock"}`}>
+          {inStock ? `In stock (${product.stock})` : "Sold out"}
         </p>
-        {Number(product.stock) > 0 && (
-          <div className="product-actions">
-            <div className="qty-selector">
-              <label>Qty:</label>
+
+        {inStock && (
+          <div className="pd-actions">
+            <label className="pd-qty">
+              <span className="eyebrow">Qty</span>
               <select value={qty} onChange={(e) => setQty(Number(e.target.value))}>
                 {[...Array(Math.min(Number(product.stock), 10)).keys()].map((x) => (
                   <option key={x + 1} value={x + 1}>{x + 1}</option>
                 ))}
               </select>
-            </div>
-            <button className="add-to-cart-btn" onClick={handleAddToCart}>
-              <FaShoppingCart /> Add to Cart
+            </label>
+            <button className="btn-pill btn-pill--dark pd-add" onClick={handleAddToCart}>
+              Add to cart
             </button>
           </div>
         )}
-        <button className="back-btn" onClick={() => navigate("/shop")}>← Back to Shop</button>
       </div>
     </div>
   );
