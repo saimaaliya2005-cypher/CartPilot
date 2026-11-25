@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { createOrder } from "../redux/slices/orderSlice";
 import { clearCart } from "../redux/slices/cartSlice";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -39,46 +38,35 @@ const Checkout = () => {
     try {
       const { data } = await axios.post(
         `${API}/payment/create-order`,
-        { amount: total.toFixed(2) },
+        { items: cartItems.map((item) => ({ productId: item._id, quantity: item.qty })) },
         { headers: { Authorization: `Bearer ${user.token}` } },
       );
       return data.id;
     } catch (err) {
-      toast.error("Failed to create PayPal order");
+      toast.error(err.response?.data?.message || "Failed to create PayPal order");
       throw err;
     }
   };
 
   const onApprove = async (data) => {
     try {
-      const response = await axios.post(
+      // The server checks prices and stock, takes the payment and saves the order.
+      await axios.post(
         `${API}/payment/capture-order`,
-        { orderID: data.orderID },
+        {
+          orderID: data.orderID,
+          items: cartItems.map((item) => ({ productId: item._id, quantity: item.qty })),
+          address,
+        },
         { headers: { Authorization: `Bearer ${user.token}` } },
       );
 
-      if (response.data.message === "Payment verified successfully") {
-        const orderData = {
-          items: cartItems.map((item) => ({
-            productId: item._id,
-            quantity: item.qty,
-            price: item.price,
-          })),
-          totalAmount: total,
-          address,
-          paymentId: data.orderID,
-        };
-
-        await dispatch(createOrder(orderData)).unwrap();
-        placed.current = true;
-        dispatch(clearCart());
-        toast.success("Order placed successfully!");
-        navigate("/order-success");
-      } else {
-        toast.error("Payment verification failed");
-      }
+      placed.current = true;
+      dispatch(clearCart());
+      toast.success("Order placed successfully!");
+      navigate("/order-success");
     } catch (err) {
-      toast.error("Payment failed. Please try again.");
+      toast.error(err.response?.data?.message || "Payment failed. Please try again.");
     }
   };
 
